@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/Mayakarsa-id/KarsaVibes/internal/youtube"
+)
 
 func main() {
-	fmt.Println("Hello, world!")
+	featured := youtube.GetFeaturedItems()
+	v, _ := json.Marshal(featured)
+	fmt.Println(string(v))
 }
