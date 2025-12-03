@@ -35,46 +35,28 @@ func GetFeaturedItems() [20]FeaturedItem {
 	}
 
 	var result [20]FeaturedItem
+
 	gjsonRes := gjson.Get(resp, "contents.singleColumnBrowseResultsRenderer.tabs.#.tabRenderer.content.sectionListRenderer.contents.#.musicCarouselShelfRenderer.contents.#.musicResponsiveListItemRenderer")
+	runs := gjsonRes.Get(`#.#.#.flexColumns.#.musicResponsiveListItemFlexColumnRenderer.text.runs.#(navigationEndpoint.watchEndpoint.watchEndpointMusicSupportedConfigs.watchEndpointMusicConfig.musicVideoType=="MUSIC_VIDEO_TYPE_ATV")|@flatten|@flatten|@flatten`).Array()
+	gjsonThumbs := gjsonRes.Get(`#.#.#.thumbnail.musicThumbnailRenderer.thumbnail.thumbnails.0.url|@flatten|@flatten`).Array()
 
-	runs := gjson.Get(gjsonRes.String(), "#.#.#.flexColumns.#.musicResponsiveListItemFlexColumnRenderer.text.runs.0")
-	gjsonThumbs := gjson.Get(gjsonRes.String(), "#.#.#.thumbnail.musicThumbnailRenderer.thumbnail.thumbnails.0").Array()
-
-	var tmp string = "["
-	var tmpThumbnails string = "["
-
-	for a, v1 := range runs.Array() {
-		for b, v2 := range v1.Array() {
-			for c, v3 := range v2.Array() {
-				for d, v4 := range v3.Array() {
-					itemType := gjson.Get(v4.String(), "navigationEndpoint.watchEndpoint.watchEndpointMusicSupportedConfigs.watchEndpointMusicConfig.musicVideoType")
-					if itemType.Exists() && itemType.Str == "MUSIC_VIDEO_TYPE_ATV" {
-						tmp = tmp + v4.String() + ", "
-						tmpThumbnails = tmpThumbnails + gjsonThumbs[a].Array()[b].Array()[c].Array()[d].String() + ", "
-					}
-				}
-			}
-		}
-	}
-	tmp = tmp + "]"
-	tmpThumbnails = tmpThumbnails + "]"
-
-	titles := gjson.Get(tmp, "#.text").Array()
-	watchIds := gjson.Get(tmp, "#.navigationEndpoint.watchEndpoint.videoId").Array()
-	watchPlIds := gjson.Get(tmp, "#.navigationEndpoint.watchEndpoint.playlistId").Array()
-	thumbnails := gjson.Get(tmpThumbnails, "#.url").Array()
-
-	for i := range 20 {
-		if len(titles) < i {
+	i := 0
+	for j, run := range runs {
+		if i >= 20 {
 			break
 		}
-		result[i] = FeaturedItem{
-			Title:      titles[i].Str,
-			WatchId:    watchIds[i].Str,
-			PlaylistId: watchPlIds[i].Str,
-			Thumbnail: string(
-				thumbnailSizeRegex.ReplaceAll([]byte(thumbnails[i].Str), []byte("=w120-h120")),
-			),
+
+		itemType := run.Get("navigationEndpoint.watchEndpoint.watchEndpointMusicSupportedConfigs.watchEndpointMusicConfig.musicVideoType")
+		if itemType.Exists() && itemType.Str == "MUSIC_VIDEO_TYPE_ATV" {
+			result[i] = FeaturedItem{
+				Title:      run.Get("text").Str,
+				WatchId:    run.Get("navigationEndpoint.watchEndpoint.videoId").Str,
+				PlaylistId: run.Get("navigationEndpoint.watchEndpoint.playlistId").Str,
+				Thumbnail: string(
+					thumbnailSizeRegex.ReplaceAll([]byte(gjsonThumbs[j].Str), []byte("=w120-h120")),
+				),
+			}
+			i++
 		}
 	}
 
