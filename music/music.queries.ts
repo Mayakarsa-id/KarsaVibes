@@ -121,3 +121,21 @@ musicShelfRenderer.contents[].musicResponsiveListItemRenderer.{
   )
 }
 ][][]|[?videoId!='']`;
+
+export const PLAYLIST_ENDPOINT_FIND_QUERY = `
+(contents.singleColumnMusicWatchNextResultsRenderer.tabbedRenderer
+.watchNextTabbedResultsRenderer.tabs[0].tabRenderer.content.musicQueueRenderer
+.content.playlistPanelRenderer.contents[].automixPreviewVideoRenderer.content
+.automixPlaylistVideoRenderer.navigationEndpoint.watchPlaylistEndpoint)[0]
+`;
+
+export const PLAYLIST_QUERY = `
+  (contents.singleColumnMusicWatchNextResultsRenderer.tabbedRenderer
+  .watchNextTabbedResultsRenderer.tabs[0].tabRenderer.content.musicQueueRenderer
+  .content.playlistPanelRenderer.contents[].playlistPanelVideoRenderer|[?videoId!=''])[].{
+    thumbnail: thumbnail.thumbnails[0].url,
+    videoId: videoId,
+    title: title.runs[0].text,
+    subtitle: shortBylineText.runs[0].text
+  }
+`;
