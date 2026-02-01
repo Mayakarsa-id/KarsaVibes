@@ -1,7 +1,7 @@
 import { search } from "jmespath";
 import { createContext } from "../context";
 import { getSessionData, type SessionData } from "../session";
-import { youtubeMusicFetch } from "./music.api";
+import { request, sleep, waitUntill, youtubeMusicFetch } from "./music.api";
 import type { AutomixContextExtras, Music } from "./music.types";
 import {
   FEATURED_QUERY,
@@ -9,6 +9,7 @@ import {
   PLAYLIST_QUERY,
   SEARCH_QUERY,
 } from "./music.queries";
+import { conveertToMp3 } from "./ytmp3.client";
 
 /**
  * This function will fetch "Quick Picks" on Music Youtube's home page
@@ -104,4 +105,8 @@ export async function getAutomixQueue(videoId: string): Promise<Music[]> {
   const body = await response.json();
   const data: Music[] = search(body, PLAYLIST_QUERY);
   return data;
+}
+
+export function getAudioFile(videoId: string): Promise<string> {
+  return conveertToMp3(videoId);
 }

@@ -1,5 +1,5 @@
 import {
-  getAutomixPlaylistEndpoint,
+  getAudioFile,
   getAutomixQueue,
   getFeatured,
   getSearchResult,
@@ -14,6 +14,7 @@ console.log(
       await featured,
       await getSearchResult("Sheila On 7"),
       await getAutomixQueue((await featured)[0]!.videoId),
+      await getAudioFile((await featured)[0]!.videoId),
     ]),
   ),
 );
