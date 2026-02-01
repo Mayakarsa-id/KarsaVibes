@@ -1,6 +1,6 @@
 import { search } from "jmespath";
 import { createContext } from "./helper/context";
-import { getSessionData } from "./helper/session";
+import { getSessionData, type SessionData } from "./helper/session";
 
 export type Music = {
   thumbnail: string;
@@ -23,15 +23,13 @@ navigationEndpoint.watchEndpoint
 .watchEndpointMusicConfig.musicVideoType=='MUSIC_VIDEO_TYPE_UGC'
 )`;
 
-/**
- * This function will fetch "Quick Picks" on Music Youtube's home page
- */
-export async function getFeatured(): Promise<Music[]> {
-  const sessionData = await getSessionData();
-  const context = createContext(sessionData, { browseId: "FEmusic_home" });
-
-  const response = await fetch(
-    "https://music.youtube.com/youtubei/v1/browse?prettyPrint=false",
+function useAPI(
+  mode: "browse" | "search" | "next",
+  sessionData: SessionData,
+  context: any,
+): Promise<Response> {
+  return fetch(
+    `https://music.youtube.com/youtubei/v1/${mode}?prettyPrint=false`,
     {
       method: "POST",
       headers: {
@@ -45,6 +43,16 @@ export async function getFeatured(): Promise<Music[]> {
       body: JSON.stringify(context),
     },
   );
+}
+
+/**
+ * This function will fetch "Quick Picks" on Music Youtube's home page
+ */
+export async function getFeatured(): Promise<Music[]> {
+  const sessionData = await getSessionData();
+  const context = createContext(sessionData, { browseId: "FEmusic_home" });
+
+  const response = await useAPI("browse", sessionData, context);
   if (!response.ok)
     throw new Error(
       response.status > 0
@@ -101,21 +109,7 @@ export async function getSearchResult(query: string): Promise<Music[]> {
   const sessionData = await getSessionData();
   const context = createContext(sessionData, { query });
 
-  const response = await fetch(
-    "https://music.youtube.com/youtubei/v1/search?prettyPrint=false",
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-Goog-Visitor-Id": sessionData.visitorData,
-        "X-Youtube-Bootstrap-Logged-In": "false",
-        "X-Youtube-Client-Name": "67",
-        "X-Youtube-Client-Version": sessionData.clientVersion,
-      },
-      body: JSON.stringify(context),
-    },
-  );
+  const response = await useAPI("search", sessionData, context);
   if (!response.ok)
     throw new Error(
       response.status > 0
