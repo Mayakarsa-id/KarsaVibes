@@ -1,7 +1,7 @@
 import { search } from "jmespath";
 import { createContext } from "../context";
 import { getSessionData, type SessionData } from "../session";
-import { request, sleep, waitUntill, youtubeMusicFetch } from "./music.api";
+import { youtubeMusicFetch } from "./music.api";
 import type { AutomixContextExtras, Music } from "./music.types";
 import {
   FEATURED_QUERY,
