@@ -1,6 +1,6 @@
 export type Music = {
   thumbnail: string;
-  videoId: string;
+  musicId: string;
   title: string;
   subtitle: string;
 };

@@ -52,15 +52,15 @@ export async function getSearchResult(query: string): Promise<Music[]> {
 }
 
 /**
- * This function will get Music Youtube automix params for `videoId`
- * @param videoId {string}
+ * This function will get Music Youtube automix params for `musicId`
+ * @param musicId {string}
  */
 export async function getAutomixPlaylistEndpoint(
   sessionData: SessionData,
-  videoId: string,
+  musicId: string,
 ): Promise<AutomixContextExtras> {
   const contextExtras = {
-    videoId,
+    videoId: musicId,
     isAudioOnly: true,
     tunerSettingValue: "AUTOMIX_SETTING_NORMAL",
   };
@@ -70,13 +70,13 @@ export async function getAutomixPlaylistEndpoint(
   if (!response.ok)
     throw new Error(
       response.status > 0
-        ? `Failed when get automix playlist endpoint for "${videoId}": ${response.statusText}`
+        ? `Failed when get automix playlist endpoint for "${musicId}": ${response.statusText}`
         : "Couldn't resolve music.youtube.com",
     );
 
   const body: any = await response.json();
   const data = search(body, PLAYLIST_ENDPOINT_FIND_QUERY);
-  if (!data) throw new Error("Invalid videoId or music not found");
+  if (!data) throw new Error("Invalid musicId or music not found");
 
   return {
     ...contextExtras,
@@ -86,19 +86,19 @@ export async function getAutomixPlaylistEndpoint(
 }
 
 /**
- * This function will get Music Youtube automix for `videoId`
- * @param videoId {string}
+ * This function will get Music Youtube automix for `musicId`
+ * @param musicId {string}
  */
-export async function getAutomixQueue(videoId: string): Promise<Music[]> {
+export async function getAutomixQueue(musicId: string): Promise<Music[]> {
   const sessionData = await getSessionData();
-  const contextExtras = await getAutomixPlaylistEndpoint(sessionData, videoId);
+  const contextExtras = await getAutomixPlaylistEndpoint(sessionData, musicId);
   const context = createContext(sessionData, contextExtras);
 
   const response = await youtubeMusicFetch("next", sessionData, context);
   if (!response.ok)
     throw new Error(
       response.status > 0
-        ? `Failed when get automix for "${videoId}": ${response.statusText}`
+        ? `Failed when get automix for "${musicId}": ${response.statusText}`
         : "Couldn't resolve music.youtube.com",
     );
 
@@ -107,6 +107,6 @@ export async function getAutomixQueue(videoId: string): Promise<Music[]> {
   return data;
 }
 
-export function getAudioFile(videoId: string): Promise<string> {
-  return conveertToMp3(videoId);
+export function getAudioFile(musicId: string): Promise<string> {
+  return conveertToMp3(musicId);
 }

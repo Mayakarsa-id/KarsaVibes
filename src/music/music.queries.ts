@@ -17,7 +17,7 @@ contents.singleColumnBrowseResultsRenderer.tabs[].tabRenderer
 .content.sectionListRenderer.contents[].musicCarouselShelfRenderer.contents[]
 .musicResponsiveListItemRenderer.{
   thumbnail: thumbnail.musicThumbnailRenderer.thumbnail.thumbnails[0].url,
-  videoId: join(
+  musicId: join(
     '',
     flexColumns[]
     .musicResponsiveListItemFlexColumnRenderer.text.runs[?
@@ -52,13 +52,13 @@ contents.tabbedSearchResultsRenderer.tabs[0].tabRenderer.content.sectionListRend
 musicCardShelfRenderer && [
   {
     thumbnail: musicCardShelfRenderer.thumbnail.musicThumbnailRenderer.thumbnail.thumbnails[0].url,
-    videoId: join('', musicCardShelfRenderer.title.runs[].navigationEndpoint.watchEndpoint.videoId),
+    musicId: join('', musicCardShelfRenderer.title.runs[].navigationEndpoint.watchEndpoint.videoId),
     title: join('', musicCardShelfRenderer.title.runs[].text),
     subtitle: join('', musicCardShelfRenderer.subtitle.runs[].text)
   },
   musicCardShelfRenderer.contents[].musicResponsiveListItemRenderer.{
     thumbnail: thumbnail.musicThumbnailRenderer.thumbnail.thumbnails[0].url,
-    videoId: join(
+    musicId: join(
       '',
       flexColumns[]
       .musicResponsiveListItemFlexColumnRenderer.text.runs[?
@@ -91,7 +91,7 @@ musicCardShelfRenderer && [
 
 musicShelfRenderer.contents[].musicResponsiveListItemRenderer.{
   thumbnail: thumbnail.musicThumbnailRenderer.thumbnail.thumbnails[0].url,
-  videoId: join(
+  musicId: join(
     '',
     flexColumns[]
     .musicResponsiveListItemFlexColumnRenderer.text.runs[?
@@ -134,7 +134,7 @@ export const PLAYLIST_QUERY = `
   .watchNextTabbedResultsRenderer.tabs[0].tabRenderer.content.musicQueueRenderer
   .content.playlistPanelRenderer.contents[].playlistPanelVideoRenderer|[?videoId!=''])[].{
     thumbnail: thumbnail.thumbnails[0].url,
-    videoId: videoId,
+    musicId: videoId,
     title: title.runs[0].text,
     subtitle: shortBylineText.runs[0].text
   }
