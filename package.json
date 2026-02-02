@@ -1,0 +1,16 @@
+{
+  "name": "karsavibes",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "hono": "^4.11.7",
+    "jmespath": "^0.16.0"
+  }
+}
