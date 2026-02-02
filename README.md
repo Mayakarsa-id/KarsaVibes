@@ -1,15 +1,5 @@
-# karsavibes
+# KarsaVibes
 
-To install dependencies:
+> This project is inspired by [YouTunee](https://github.com/navetacandra/youtune) with similiar purpose.
 
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.3.6. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+**KarsaVibes** built with no heavy framework.
