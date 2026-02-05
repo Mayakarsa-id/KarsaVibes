@@ -1,5 +1,45 @@
+var import_node_module = require("node:module");
+var __defProp = Object.defineProperty;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __moduleCache = /* @__PURE__ */ new WeakMap;
+var __toCommonJS = (from) => {
+  var entry = __moduleCache.get(from), desc;
+  if (entry)
+    return entry;
+  entry = __defProp({}, "__esModule", { value: true });
+  if (from && typeof from === "object" || typeof from === "function")
+    __getOwnPropNames(from).map((key) => !__hasOwnProp.call(entry, key) && __defProp(entry, key, {
+      get: () => from[key],
+      enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+    }));
+  __moduleCache.set(from, entry);
+  return entry;
+};
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, {
+      get: all[name],
+      enumerable: true,
+      configurable: true,
+      set: (newValue) => all[name] = () => newValue
+    });
+};
+
+// src/index.ts
+var exports_src = {};
+__export(exports_src, {
+  getSearchResult: () => getSearchResult,
+  getInfo: () => getInfo,
+  getFeatured: () => getFeatured,
+  getAutomixQueue: () => getAutomixQueue,
+  getAudioFile: () => getAudioFile
+});
+module.exports = __toCommonJS(exports_src);
+
 // src/music/music.service.ts
-import { search } from "jmespath";
+var import_jmespath = require("jmespath");
 
 // src/context.ts
 function createContext(sessionData, extras) {
@@ -305,7 +345,7 @@ async function getFeatured() {
   if (!response.ok)
     throw new Error(response.status > 0 ? `Failed when get featured page: ${response.statusText}` : "Couldn't resolve music.youtube.com");
   const body = await response.json();
-  const data = search(body, FEATURED_QUERY);
+  const data = import_jmespath.search(body, FEATURED_QUERY);
   return data;
 }
 async function getSearchResult(query) {
@@ -315,7 +355,7 @@ async function getSearchResult(query) {
   if (!response.ok)
     throw new Error(response.status > 0 ? `Failed when get search result for "${query}": ${response.statusText}` : "Couldn't resolve music.youtube.com");
   const body = await response.json();
-  const data = search(body, SEARCH_QUERY);
+  const data = import_jmespath.search(body, SEARCH_QUERY);
   return data;
 }
 async function getAutomixPlaylistEndpoint(sessionData, musicId) {
@@ -329,7 +369,7 @@ async function getAutomixPlaylistEndpoint(sessionData, musicId) {
   if (!response.ok)
     throw new Error(response.status > 0 ? `Failed when get automix playlist endpoint for "${musicId}": ${response.statusText}` : "Couldn't resolve music.youtube.com");
   const body = await response.json();
-  const data = search(body, PLAYLIST_ENDPOINT_FIND_QUERY);
+  const data = import_jmespath.search(body, PLAYLIST_ENDPOINT_FIND_QUERY);
   if (!data)
     throw new Error("Invalid musicId or music not found");
   return {
@@ -346,7 +386,7 @@ async function getAutomixQueue(musicId) {
   if (!response.ok)
     throw new Error(response.status > 0 ? `Failed when get automix for "${musicId}": ${response.statusText}` : "Couldn't resolve music.youtube.com");
   const body = await response.json();
-  const data = search(body, PLAYLIST_QUERY);
+  const data = import_jmespath.search(body, PLAYLIST_QUERY);
   return data;
 }
 async function getInfo(musicId) {
@@ -374,16 +414,9 @@ async function getInfo(musicId) {
   if (!response.ok)
     throw new Error(response.status > 0 ? `Failed when get info for "${musicId}": ${response.statusText}` : "Couldn't resolve music.youtube.com");
   const body = await response.json();
-  const data = search(body, MUSIC_DETAIL);
+  const data = import_jmespath.search(body, MUSIC_DETAIL);
   return data;
 }
 function getAudioFile(musicId) {
   return convertToMp3(musicId);
 }
-export {
-  getSearchResult,
-  getInfo,
-  getFeatured,
-  getAutomixQueue,
-  getAudioFile
-};
