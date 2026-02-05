@@ -3,6 +3,7 @@ import {
   getAudioFile,
   getAutomixQueue,
   getFeatured,
+  getInfo,
   getSearchResult,
 } from "./index";
 
@@ -13,6 +14,13 @@ app.get("/", (c) =>
   c.json({
     author: "navetacandra",
     profile: "https://github.com/navetacandra",
+    endpoint: {
+      featured: c.req.url + "featured",
+      search: c.req.url + "search/:keyword",
+      info: c.req.url + "info/:id",
+      automix: c.req.url + "automix/:id",
+      audio: c.req.url + "audio/:id",
+    },
   }),
 );
 
@@ -22,6 +30,13 @@ app.get("/search/:keyword", async (c) =>
   c.json({
     keyword: c.req.param("keyword"),
     result: await getSearchResult(c.req.param("keyword")),
+  }),
+);
+
+app.get("/info/:id", async (c) =>
+  c.json({
+    musicId: c.req.param("id"),
+    data: await getInfo(c.req.param("id")),
   }),
 );
 
