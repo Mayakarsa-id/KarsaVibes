@@ -9,7 +9,7 @@ import {
   PLAYLIST_QUERY,
   SEARCH_QUERY,
 } from "./music.queries";
-import { conveertToMp3 } from "./ytmp3.client";
+import { convertToMp3 } from "./ytmp3.client";
 
 /**
  * This function will fetch "Quick Picks" on Music Youtube's home page
@@ -108,5 +108,5 @@ export async function getAutomixQueue(musicId: string): Promise<Music[]> {
 }
 
 export function getAudioFile(musicId: string): Promise<string> {
-  return conveertToMp3(musicId);
+  return convertToMp3(musicId);
 }

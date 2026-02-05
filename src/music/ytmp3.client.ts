@@ -16,7 +16,7 @@ export async function initConversion(musicId: string): Promise<string> {
   return body.convertURL;
 }
 
-export async function conveertToMp3(musicId: string): Promise<string> {
+export async function convertToMp3(musicId: string): Promise<string> {
   const convertURL =
     (await initConversion(musicId)) + `&v=${musicId}&f=mp3&_=${Math.random()}`;
 
