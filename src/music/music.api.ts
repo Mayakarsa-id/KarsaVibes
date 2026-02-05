@@ -13,7 +13,12 @@ export function sleep(millis: number): Promise<void> {
 
 export function request(
   url: string,
-  args: { from: string; method?: "GET" | "POST"; headers?: any; body?: string },
+  args: {
+    from: string;
+    method?: "GET" | "POST" | "HEAD";
+    headers?: any;
+    body?: string;
+  },
 ) {
   return fetch(url, {
     method: args.method || "GET",
@@ -22,6 +27,16 @@ export function request(
     headers: { ...HEADER, Origin: args.from, ...args.headers },
     body: args.body,
   });
+}
+
+export async function resolveRedirect(url: string): Promise<string | null> {
+  try {
+    const response = await request(url, { from: url, method: "HEAD" });
+    return response.url;
+  } catch (err) {
+    console.error(`Failed resolve redirect for ${url}: ${err}`);
+    return null;
+  }
 }
 
 export function youtubeMusicFetch(

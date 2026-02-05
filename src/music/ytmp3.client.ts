@@ -1,4 +1,4 @@
-import { request, sleep } from "./music.api";
+import { request, resolveRedirect, sleep } from "./music.api";
 
 export async function initConversion(musicId: string): Promise<string> {
   const response = await request(
@@ -35,7 +35,9 @@ export async function convertToMp3(musicId: string): Promise<string> {
       await request(body.progressURL, { from: "https://id.ytmp3.mobi" })
     ).json()) as any;
 
-    if (progress === 3) return body.downloadURL;
+    if (progress === 3)
+      return (await resolveRedirect(body.downloadURL)) ?? body.downloadURL;
+
     await sleep(250);
   }
 }
