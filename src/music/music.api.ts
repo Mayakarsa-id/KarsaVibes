@@ -40,7 +40,7 @@ export async function resolveRedirect(url: string): Promise<string | null> {
 }
 
 export function youtubeMusicFetch(
-  mode: "browse" | "search" | "next",
+  mode: "browse" | "search" | "next" | "player",
   sessionData: SessionData,
   context: any,
 ): Promise<Response> {

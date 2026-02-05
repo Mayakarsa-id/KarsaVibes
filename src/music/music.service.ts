@@ -2,10 +2,11 @@ import { search } from "jmespath";
 import { createContext } from "../context";
 import { getSessionData } from "../session";
 import { youtubeMusicFetch } from "./music.api";
-import type { AutomixContextExtras, Music } from "./music.types";
+import type { AutomixContextExtras, Music, MusicDetail } from "./music.types";
 import type { SessionData } from "../session";
 import {
   FEATURED_QUERY,
+  MUSIC_DETAIL,
   PLAYLIST_ENDPOINT_FIND_QUERY,
   PLAYLIST_QUERY,
   SEARCH_QUERY,
@@ -105,6 +106,41 @@ export async function getAutomixQueue(musicId: string): Promise<Music[]> {
 
   const body = await response.json();
   const data: Music[] = search(body, PLAYLIST_QUERY);
+  return data;
+}
+
+export async function getInfo(musicId: string): Promise<MusicDetail> {
+  const sessionData = await getSessionData();
+  const context = createContext(sessionData, {
+    videoId: musicId,
+    playbackContext: {
+      contentPlaybackContext: {
+        html5Preference: "HTML5_PREF_WANTS",
+        lactMilliseconds: "1113",
+        referer: "https://music.youtube.com/",
+        signatureTimestamp: 20486,
+        autoCaptionsDefaultOn: false,
+        mdxContext: {},
+        vis: 10,
+      },
+      devicePlaybackCapabilities: {
+        supportsVp9Encoding: true,
+        supportXhr: true,
+      },
+    },
+    captionParams: {},
+  });
+
+  const response = await youtubeMusicFetch("player", sessionData, context);
+  if (!response.ok)
+    throw new Error(
+      response.status > 0
+        ? `Failed when get info for "${musicId}": ${response.statusText}`
+        : "Couldn't resolve music.youtube.com",
+    );
+
+  const body = await response.json();
+  const data: MusicDetail = search(body, MUSIC_DETAIL);
   return data;
 }
 

@@ -5,6 +5,15 @@ export type Music = {
   subtitle: string;
 };
 
+export type MusicDetail = {
+  musicId: string;
+  title: string;
+  thumbnail: string;
+  author: string;
+  duration: number;
+  playCount: number;
+};
+
 export type AutomixContextExtras = {
   videoId: string;
   isAudioOnly: true;
