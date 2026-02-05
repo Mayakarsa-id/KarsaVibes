@@ -1,8 +1,9 @@
 {
-  "name": "karsavibes",
+  "name": "KarsaVibes",
+  "version": "1.0",
+  "description": "KarsaVibes is Youtube Music's scraper to avoid ads",
   "module": "src/index.ts",
   "type": "module",
-  "private": true,
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -12,5 +13,13 @@
   "dependencies": {
     "hono": "^4.11.7",
     "jmespath": "^0.16.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mayakarsa-id/KarsaVibes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mayakarsa-id/KarsaVibes/issues"
+  },
+  "homepage": "https://github.com/Mayakarsa-id/KarsaVibes#readme"
 }
