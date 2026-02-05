@@ -2,7 +2,7 @@
   "name": "KarsaVibes",
   "version": "1.0",
   "description": "KarsaVibes is Youtube Music's scraper to avoid ads",
-  "module": "src/index.ts",
+  "module": "dist/index.js",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest"
