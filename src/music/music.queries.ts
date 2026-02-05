@@ -139,3 +139,14 @@ export const PLAYLIST_QUERY = `
     subtitle: shortBylineText.runs[0].text
   }
 `;
+
+export const MUSIC_DETAIL = `
+  videoDetails.{
+    musicId: videoId,
+    title: title,
+    thumbnail: thumbnail.thumbnails[0].url,
+    author: author,
+    duration: lengthSeconds.to_number(@),
+    playCount: viewCount.to_number(@)
+  }
+`;
